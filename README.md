@@ -4,3 +4,4 @@
 This project is a starting point for a Web application.
 - [프로젝트 메인 주소](https://github.com/inyoung272/WEB_main_20241031)
 ## 2주차 수업 메인화면 개발 완료! (문제 포함)
+## 3주차, 4주차 수업 개발 완료(컴포넌트 활용)
