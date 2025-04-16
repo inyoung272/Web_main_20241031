@@ -32,3 +32,12 @@ function show_clock(){
     function out(obj) {
     obj.src="image/steam_blue.png";
     }
+
+//    const over = (obj) => {
+//        obj.src = "image/LOGO.png";
+//        };
+//        const search_message = () => {
+//        const c = '검색을 수행합니다';
+//        alert(c);
+//        };    < 최신 자바 코딩, 위의 function과 동일한 함수다.
+
