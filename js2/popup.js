@@ -1,7 +1,3 @@
-function pop_up() {
-window.open("../popup/popup.html", "팝업창 확인", "width=400, height=300, top=10, left=10");
-}
-
 function show_clock(){
     let currentDate= new Date(); // 현재시스템날짜객체생성
    let divClock= document.getElementById('divClock');
@@ -25,6 +21,19 @@ function show_clock(){
     }
     setTimeout(show_clock, 1000);  //1초마다갱신
    }
+
+   function closePopup()
+   {
+    console.log("쿠키를 설정합니다");
+    self.close();
+   }
+    
+   function Popup(){
+    var cookieCheck = getCookie("popupYN");
+    if (cookieCheck != "N"){
+    window.open("../popup/popup.html", "팝업테스트", "width=400, height=300, top=10, left=10");
+    }
+    }
    
    function over(obj) {
     obj.src="../image/logo_steam.svg";
