@@ -29,12 +29,15 @@ document.addEventListener("DOMContentLoaded", () => {
   return null;
   }
   
-  function session_check() {
-  if (sessionStorage.getItem("Session_Storage_test")) {
-  alert("이미 로그인 되었습니다.");
-  location.href = "../login/index_login.html";
+ function session_check() {
+  if (sessionStorage.getItem("Session_Storage_test") && 
+      !sessionStorage.getItem("loginAlertShown")) {
+    alert("이미 로그인 되었습니다.");
+    sessionStorage.setItem("loginAlertShown", "true");
+    location.href = "../login/index_login.html";
   }
-  }
+}
+
   
   function init() {
   const emailInput = document.getElementById('typeEmailX');
@@ -47,8 +50,9 @@ document.addEventListener("DOMContentLoaded", () => {
   session_check();
   }
 
-  document.addEventListener('DOMContentLoaded', () => {
-init();
+ document.addEventListener('DOMContentLoaded', () => {
+checkAuth();
+init_logined();
 });
 
 
