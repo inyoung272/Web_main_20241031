@@ -31,7 +31,7 @@
     
     <nav class="navbar navbar-expand-lg bg-body-tertiary">
         <div class="container-fluid">
-          <a class="navbar-brand" href="#">스팀</a>
+          <a class="navbar-brand" href="https://store.steampowered.com/">스팀</a>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
@@ -48,10 +48,13 @@
                   드랍다운
                 </a>
                 <ul class="dropdown-menu">
-                  <li><a class="dropdown-item" href="#">Action</a></li>
-                  <li><a class="dropdown-item" href="#">Another action</a></li>
+                   <!--인기게임 검색-->
+                  <li><a class="dropdown-item" href="https://store.steampowered.com/search/?filter=topsellers">인기게임</a></li>
+                   <!--무료게임 검색-->
+                  <li><a class="dropdown-item" href="https://store.steampowered.com/genre/Free%20to%20Play/">무료게임</a></li>
                   <li><hr class="dropdown-divider"></li>
-                  <li><a class="dropdown-item" href="#">Something else here</a></li>
+                   <!--포인트 상점-->
+                  <li><a class="dropdown-item" href="https://store.steampowered.com/points/shop/">포인트 상점</a></li>
                 </ul>
               </li>
               <li class="nav-item">
@@ -59,9 +62,9 @@
               </li>
             </ul>
            
-            <form class="d-flex" role="search" onsubmit="return googlesearch();">
-              <input class="form-control me-2" type="search" placeholder="키워드 입력" aria-label="Search">
-              <button class="btn btn-outline-success" id="search_btn" type="submit">검색하기</button>
+            <form class="d-flex" role="search" onsubmit="return googleSearch();">
+              <input id="search_input" class="form-control me-2" type="search" placeholder="키워드 입력" aria-label="Search">
+              <button class="btn btn-outline-success" id="search_button_msg" type="submit">검색하기</button>
               <a href="login/login.html" class="btn btn-outline-success" id="login_btn">로그인 하기</a>
 
             </form>

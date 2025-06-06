@@ -1,5 +1,6 @@
 import { encrypt_text, decrypt_text } from './crypto.js';
 
+
 export function session_set() { //세션 저장
 let id = document.querySelector("#typeEmailX");
 let password = document.querySelector("#typePasswordX");
@@ -8,18 +9,13 @@ const obj = { // 객체 선언
 id : id.value,
 otp : random
 }
-// 다음 페이지 계속 작성하기
 }
 
-export function session_set2() { //세션 저장
-let id = document.querySelector("#typeEmailX");
-let password = document.querySelector("#typePasswordX");
-let random = new Date(); // 랜덤 타임스탬프
-const obj = { // 객체 선언
-id : id.value,
-otp : random
-}
-// 다음 페이지 계속 작성하기
+// js_sesion.js
+export function session_set2(signupObj) {
+    sessionStorage.setItem("signup_name", signupObj._name);
+    sessionStorage.setItem("signup_email", signupObj._email);
+    sessionStorage.setItem("signup_pw", signupObj._password);
 }
 
 

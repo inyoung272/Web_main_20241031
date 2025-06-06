@@ -35,6 +35,20 @@ document.addEventListener("DOMContentLoaded", () => {
   location.href = "../login/index_login.html";
   }
   }
+
+  function session_del() {//세션 삭제
+if (sessionStorage) {
+sessionStorage.removeItem("Session_Storage_test");
+ alert('로그아웃 버튼 클릭 확인 : 세션 스토리지를 삭제합니다.');
+ } else {
+ alert("세션 스토리지 지원 x");
+ }
+ }
+
+function logout(){
+ session_del(); // 세션 삭제
+location.href='../index.html';
+ }
   
   function init() {
   const emailInput = document.getElementById('typeEmailX');
@@ -46,6 +60,8 @@ document.addEventListener("DOMContentLoaded", () => {
   }
   session_check();
   }
+
+  
 
   document.addEventListener('DOMContentLoaded', () => {
 init();
@@ -130,3 +146,29 @@ if (idsave_check.checked) {
 document.getElementById("login_btn").addEventListener('click', check_input);
 });
 
+function login_failed() {
+  let failCount = parseInt(getCookie("failCount") || "0");
+
+  failCount += 1;
+  setCookie("failCount", failCount, 1);  // 하루 유지
+
+  const failMessage = document.getElementById("fail_message");
+
+  if (failCount >= 3) {
+    alert("로그인 실패가 3회 초과되어 제한됩니다.");
+    if (failMessage) {
+      failMessage.innerText = `로그인 제한: ${failCount}회 실패`;
+    }
+    // 버튼 비활성화
+    const loginBtn = document.getElementById("login_btn");
+    if (loginBtn) {
+      loginBtn.disabled = true;
+    }
+    return false;
+  } else {
+    alert(`로그인 실패! 현재 실패 횟수: ${failCount}`);
+    if (failMessage) {
+      failMessage.innerText = `현재 실패 횟수: ${failCount}`;
+    }
+  }
+}
