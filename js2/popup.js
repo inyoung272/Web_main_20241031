@@ -38,13 +38,12 @@ function show_clock(){
     }
     }
 
-    document.cookie = escape(name) + "=" + escape(value) + "; expires=" + date.toUTCString() + ";path=/" + ";SameSite=None; Secure";
     
 function setCookie(name, value, expiredays) {
     var date = new Date();
     date.setDate(date.getDate() + expiredays);
     document.cookie = escape(name) + "=" + escape(value) + ";expires=" + date.toUTCString() + "; path=/";
-    }
+}
 
     function getCookie(name) {
         var cookie = document.cookie;

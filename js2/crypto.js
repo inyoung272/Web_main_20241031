@@ -1,38 +1,55 @@
-import { session_set, session_get, session_check } from './js_sesion.js';
+import { session_set, session_set2, session_get, session_check } from './js_sesion.js';
 
-function encodeByAES256(key, data){ //
-const cipher = CryptoJS.AES.encrypt(data, CryptoJS.enc.Utf8.parse(key), {
-iv: CryptoJS.enc.Utf8.parse(""), // IV 초기화 벡터
-padding: CryptoJS.pad.Pkcs7, // 패딩
-mode: CryptoJS.mode.CBC // 운영 모드
-});
+// AES256 암호화 함수
+function encodeByAES256(key, data) {
+  const cipher = CryptoJS.AES.encrypt(data, CryptoJS.enc.Utf8.parse(key), {
+    iv: CryptoJS.enc.Utf8.parse(""),
+    padding: CryptoJS.pad.Pkcs7,
+    mode: CryptoJS.mode.CBC
+  });
 
-return cipher.toString();
+  return cipher.toString();
 }
 
-function decodeByAES256(key, data){
-const cipher = CryptoJS.AES.decrypt(data, CryptoJS.enc.Utf8.parse(key), {
-iv: CryptoJS.enc.Utf8.parse(""),
-padding: CryptoJS.pad.Pkcs7,
-mode: CryptoJS.mode.CBC
-});
-return cipher.toString(CryptoJS.enc.Utf8);
+// AES256 복호화 함수
+function decodeByAES256(key, data) {
+  if (!data) {
+    throw new Error("복호화할 데이터가 없습니다.");
+  }
+
+  const cipher = CryptoJS.AES.decrypt(data, CryptoJS.enc.Utf8.parse(key), {
+    iv: CryptoJS.enc.Utf8.parse(""),
+    padding: CryptoJS.pad.Pkcs7,
+    mode: CryptoJS.mode.CBC
+  });
+
+  return cipher.toString(CryptoJS.enc.Utf8);
 }
 
-export function encrypt_text(password){
-const k = "key"; // 클라이언트 키
-const rk = k.padEnd(32, " "); // AES256은 key 길이가 32
-const b = password;
-const eb = encodeByAES256(rk, b); // 실제 암호화
-return eb;
-console.log(eb);
+export function encrypt_text(password) {
+  const k = "key";
+  const rk = k.padEnd(32, " ");
+  const b = password;
+  const eb = encodeByAES256(rk, b);
+  console.log("암호화 결과:", eb);
+  return eb;
 }
 
-export function decrypt_text(){
-const k = "key"; // 서버의 키
-const rk = k.padEnd(32, " "); // AES256은 key 길이가 32
-const eb = session_get();
-const b = decodeByAES256(rk, eb); // 실제 복호화
-console.log(b);
-}
+export function decrypt_text() {
+  const k = "key";
+  const rk = k.padEnd(32, " ");
+  const eb = session_get();
 
+  if (!eb) {
+    console.error("session_get()의 반환값이 비어 있음");
+    return;
+  }
+
+  try {
+    const b = decodeByAES256(rk, eb);
+    console.log("복호화 결과:", b);
+    return b;
+  } catch (e) {
+    console.error("복호화 실패:", e.message);
+  }
+}

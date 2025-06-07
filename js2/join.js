@@ -62,8 +62,6 @@ function join() {
         return;
     }
 
-    const newSignUp = new SignUp(name.value, email.value, password.value, re_password.value);
-    session_set2(newSignUp);
     form.action = "../index.html";
     form.method = "get";
     form.submit();
@@ -71,7 +69,4 @@ function join() {
 
 document.getElementById("join_btn").addEventListener('click', join);
 
-// join.js
-const newSignUp = new SignUp(name.value, email.value, password.value, re_password.value);
-session_set2(newSignUp); // 객체 통째로 넘기기
 

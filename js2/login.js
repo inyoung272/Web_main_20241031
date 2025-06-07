@@ -79,69 +79,86 @@ alert("세션 스토리지 지원 x");
   
   init();
   
-  const check_input = () => {
+const check_input = () => {
   const loginForm = document.getElementById('login_form');
   const emailInput = document.getElementById('typeEmailX');
   const passwordInput = document.getElementById('typePasswordX');
   const idsave_check = document.getElementById('idSaveCheck');
 
   const emailValue = emailInput.value.trim();
-const passwordValue = passwordInput.value.trim();
+  const passwordValue = passwordInput.value.trim();
 
-      const payload = {
+  // [1] 입력 유효성 검증
+  if (emailValue === '' || passwordValue === '') {
+    alert("아이디와 비밀번호를 모두 입력해주세요.");
+    return false;
+  }
+
+  const sanitizedEmail = check_xss(emailValue);
+  const sanitizedPassword = check_xss(passwordValue);
+  if (!sanitizedEmail || !sanitizedPassword) return false;
+
+  if (emailValue.length < 5) {
+    alert('아이디는 최소 5글자 이상 입력해야 합니다.');
+    return false;
+  }
+
+  if (passwordValue.length < 12) {
+    alert('비밀번호는 반드시 12글자 이상 입력해야 합니다.');
+    return false;
+  }
+
+  const hasSpecialChar = /[!,@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/.test(passwordValue);
+  if (!hasSpecialChar) {
+    alert('패스워드는 특수문자를 1개 이상 포함해야 합니다.');
+    return false;
+  }
+
+  const hasUpperCase = /[A-Z]/.test(passwordValue);
+  const hasLowerCase = /[a-z]/.test(passwordValue);
+  if (!hasUpperCase || !hasLowerCase) {
+    alert('패스워드는 대소문자를 1개 이상 포함해야 합니다.');
+    return false;
+  }
+
+  // [2] 쿠키 저장 (아이디 저장 체크)
+  if (idsave_check.checked) {
+    setCookie("id", emailValue, 1);
+  } else {
+    setCookie("id", emailValue, 0);
+  }
+
+  // [3] 🔐 회원가입 시 저장된 비밀번호와 비교
+  const storedEmail = sessionStorage.getItem("signup_email");
+  const storedPassword = sessionStorage.getItem("signup_pw");
+
+  if (!storedEmail || !storedPassword) {
+    alert("회원가입 정보가 없습니다. 먼저 회원가입을 진행해주세요.");
+    return false;
+  }
+
+  if (emailValue !== storedEmail || passwordValue !== storedPassword) {
+    alert("이메일 또는 비밀번호가 일치하지 않습니다.");
+    login_failed(); // 실패 횟수 증가
+    return false;
+  }
+
+  // [4] 로그인 성공 처리
+  const payload = {
     id: emailValue,
-    exp: Math.floor(Date.now() / 1000) + 3600 // 1시간 (3600초)
-    };
-    const jwtToken = generateJWT(payload);
-
-
-
-if (emailValue === '' || passwordValue === '') {
-  alert("아이디와 비밀번호를 모두 입력해주세요.");
-  return false;
-}
-
-const sanitizedEmail = check_xss(emailValue);
-const sanitizedPassword = check_xss(passwordValue);
-if (!sanitizedEmail || !sanitizedPassword) return false;
-
-if (emailValue.length < 5) {
-  alert('아이디는 최소 5글자 이상 입력해야 합니다.');
-  return false;
-}
-
-if (passwordValue.length < 12) {
-  alert('비밀번호는 반드시 12글자 이상 입력해야 합니다.');
-  return false;
-}
-
-const hasSpecialChar = /[!,@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/.test(passwordValue);
-if (!hasSpecialChar) {
-  alert('패스워드는 특수문자를 1개 이상 포함해야 합니다.');
-  return false;
-}
-
-const hasUpperCase = /[A-Z]/.test(passwordValue);
-const hasLowerCase = /[a-z]/.test(passwordValue);
-if (!hasUpperCase || !hasLowerCase) {
-  alert('패스워드는 대소문자를 1개 이상 포함해야 합니다.');
-  return false;
-}
-
-if (idsave_check.checked) {
-  setCookie("id", emailValue, 1);
-} else {
-  setCookie("id", emailValue, 0);
-}
+    exp: Math.floor(Date.now() / 1000) + 3600
+  };
+  const jwtToken = generateJWT(payload);
 
   console.log('이메일:', emailValue);
   console.log('비밀번호:', passwordValue);
+
   session_set(); // 세션 생성
   sessionStorage.setItem("Session_Storage_test", emailValue);
   localStorage.setItem('jwt_token', jwtToken);
   loginForm.submit();
+};
 
-  };
 
 document.getElementById("login_btn").addEventListener('click', check_input);
 });
